@@ -27,5 +27,5 @@ By default, usage is the same as truffle if possible. Follow these steps:
 - Run `kdep init`.
 - Copy your solidity files to the `contracts` directoy.
 - Edit `1_initial_migration.js`.
-- Edit kdep-config.js.
+- Edit `kdep-config.js`.
 - Run `kdep deploy --network {YOUR_NETWORK}`
