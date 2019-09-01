@@ -1,7 +1,7 @@
 {
   "name": "klaytn-contract-deploy",
   "version": "0.0.1",
-  "description": "Klaytn contract deploy",
+  "description": "An unofficial toolkit for deploying contracts in Klaytn",
   "main": "kdep.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,7 +21,6 @@
   "homepage": "https://github.com/jeonghonah/klaytn-contract-deploy#readme",
   "dependencies": {
     "caver-js": "^1.1.2",
-    "commander": "^3.0.0",
-    "solc": "^0.5.11"
+    "commander": "^3.0.0"
   }
 }
