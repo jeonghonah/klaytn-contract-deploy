@@ -1,7 +1,7 @@
 {
   "name": "klaytn-contract-deploy",
   "version": "0.0.1",
-  "description": "An unofficial toolkit for deploying contracts in Klaytn",
+  "description": "An unofficial toolkit for deploying smart contracts in Klaytn",
   "main": "kdep.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
