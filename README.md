@@ -1,7 +1,7 @@
 klaytn-contract-deploy
 =================
 
-klaytn-contract-deploy is an unofficial toolkit for deploying contracts in Klaytn.
+klaytn-contract-deploy is an unofficial toolkit for deploying smart contracts in Klaytn.
 
 Requirements
 =================
