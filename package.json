@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/jeonghonah/klaytn-contract-deploy.git"
   },
-  "author": "",
+  "author": "Jeongho Nah",
   "license": "LGPL-3.0",
   "bin": {
     "kdep": "./kdep.js"
