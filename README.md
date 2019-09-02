@@ -23,7 +23,7 @@ Getting Started
 =================
 By default, usage is the same as truffle if possible. Follow these steps:
 
-- Create your npm project derectory.
+- Create your npm project directory.
 - Run `kdep init`.
 - Copy your solidity files to the `contracts` directoy.
 - Edit `1_initial_migration.js`.
