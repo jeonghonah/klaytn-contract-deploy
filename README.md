@@ -9,6 +9,7 @@ Requirements
 The following packages are required to use the klaytn-contract-deploy.
 - [Node.js](https://nodejs.org/en/download/)
 - [npm](https://www.npmjs.com/get-npm)
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [solc 0.5.6 or greater](https://solidity.readthedocs.io/en/v0.5.6/installing-solidity.html/)
 
 Installation

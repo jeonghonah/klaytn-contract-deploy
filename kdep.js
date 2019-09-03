@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-let carver
 let action
 
 const Caver = require('caver-js');
@@ -21,11 +20,17 @@ program
     .action(() => { action = "init" });
 program
     .command('bridge')
-    .description('deploy bridge contract (TBA)')
+    .description('deploy predefined bridge contracts for Service Chain')
     .action(() => { action = "bridge" });
+program
+    .command('test')
+    .description('run deploy and send tx (TBA)')
+    .action(() => { action = "test" });
+
+const templates = require('./lib/templates.js');
 
 const CWD = process.cwd()
-const supportedCommands = { init: true, deploy: true, bridge: false, test: false }
+const supportedCommands = { init: true, deploy: true, bridge: true, test: false }
 const msg = {
     usageBasic: "Usage: kdep [init, deploy, bridge, test] [options]",
     usageDeploy: "Usage: kdep deploy --network <network name>"
@@ -115,46 +120,29 @@ async function actionInit(opts) {
     try {
         await exec(`mkdir -p ${CWD}/contracts`);
         await exec(`mkdir -p ${CWD}/migrations`);
-        await exec(`echo '${configFile}' >> ${CWD}/kdep-config.js`);
-        await exec(`echo '${migrationFile}' >> ${CWD}/migrations/1_initial_migration.js`);
+        await exec(`echo '${templates.configFile}' >> ${CWD}/kdep-config.js`);
+        await exec(`echo '${templates.migrationFile}' >> ${CWD}/migrations/1_initial_migration.js`);
     } catch (e) {
         console.error(e);
     }
 }
 
-function actionBridge(opts) {
-    console.log("bridge deploy is not yet supported.")
+async function actionBridge(opts) {
+    // Step 0: git clone klaytn
+    await exec(`git clone https://github.com/klaytn/klaytn.git ${CWD}/contracts/klaytn`);
+
+    // Step 1: compile solidity files
+    try {
+        let cmd
+        cmd = `solc ${CWD}/contracts/klaytn/contracts/bridge/Bridge.sol --allow-paths . --bin --abi -o build/contracts --overwrite`;
+        await exec(cmd);
+        cmd = `solc ${CWD}/contracts/klaytn/contracts/sc_erc20/sc_token.sol --allow-paths . --bin --abi -o build/contracts --overwrite`;
+        await exec(cmd);
+        cmd = `solc ${CWD}/contracts/klaytn/contracts/sc_erc721/sc_nft.sol --allow-paths . --bin --abi -o build/contracts --overwrite`;
+        await exec(cmd);
+    } catch (e) {
+        console.error(e);
+    }
+
+    // Step 2: call deploy
 }
-
-const configFile = '\
-module.exports = {\n\
-    networks: {\n\
-        mainchain: {\n\
-            host: "127.0.0.1",\n\
-            port: 8551,\n\
-            from: "0x", // enter your publickey\n\
-            network_id: "1", // Baobab network id\n\
-            gas: 800000, // transaction gas limit\n\
-            gasPrice: 25000000000, // gasPrice of Baobab is 25 Gpeb\n\
-        },\n\
-        servicechain: {\n\
-            host: "127.0.0.1",\n\
-            port: 7551,\n\
-            from: "0x", // enter your publickey\n\
-            network_id: "1000", // Service Chain network id\n\
-            gas: 800000, // transaction gas limit\n\
-            gasPrice: 25, // gasPrice of Service Chain\n\
-        },\n\
-    },\n\
-};\
-';
-
-const migrationFile = '\
-const fs = require("fs")\n\
-\n\
-const Migrations = artifacts.require("Migrations");\n\
-\n\
-module.exports = function(deployer) {\n\
-    deployer.deploy(Migrations)\n\
-};\
-';
