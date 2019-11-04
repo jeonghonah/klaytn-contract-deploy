@@ -1,6 +1,6 @@
 {
   "name": "klaytn-contract-deploy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An unofficial toolkit for deploying smart contracts in Klaytn",
   "main": "kdep.js",
   "scripts": {
