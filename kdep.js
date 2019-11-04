@@ -83,17 +83,30 @@ async function actionDeploy(opts) {
         process.exit(1);
     }
 
-    // Step 1: compile solidity files
+    // Step 1: create instance
+    const conf = require(CWD + '/kdep-config.js')
+    caver = new Caver(`http://${conf.networks[opts.network].host}:${conf.networks[opts.network].port}`);
+
+    // Step 2: compile solidity files
     try {
-        const cmd = "solc contracts/*/*.sol --allow-paths . --bin --abi -o build/contracts --overwrite";
+        let compilerOpts = ""
+        if (conf.compilers && conf.compilers.solc && conf.compilers.solc.optimizer) {
+            let optimizer = conf.compilers.solc.optimizer
+            if (optimizer.enabled) {
+                compilerOpts += " --optimize"
+            }
+            if (optimizer.runs) {
+                compilerOpts += " --optimize-runs " + optimizer.runs
+            }
+        } else {
+            compilerOpts += " --optimize --optimize-runs 200"
+        }
+        const cmd = "solc contracts/*/*.sol --allow-paths . --bin --abi -o build/contracts --overwrite" + compilerOpts;
+        console.log("compiling.. ", conf.compilers.solc.optimizer, cmd)
         await exec(cmd);
     } catch (e) {
         console.error(e);
     }
-
-    // Step 2: create instance
-    const conf = require(CWD + '/kdep-config.js')
-    caver = new Caver(`http://${conf.networks[opts.network].host}:${conf.networks[opts.network].port}`);
 
     // Step 3: deploy
     let deployer = {
@@ -144,6 +157,14 @@ module.exports = {\n\
             network_id: "1000", // Service Chain network id\n\
             gas: 800000, // transaction gas limit\n\
             gasPrice: 25, // gasPrice of Service Chain\n\
+        },\n\
+    },\n\
+    compilers: {\n\
+        solc: {\n\
+            optimizer: {\n\
+                enabled: true,\n\
+                runs: 200,\n\
+            },\n\
         },\n\
     },\n\
 };\
