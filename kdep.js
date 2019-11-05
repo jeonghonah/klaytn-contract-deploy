@@ -102,7 +102,7 @@ async function actionDeploy(opts) {
             compilerOpts += " --optimize --optimize-runs 200"
         }
         const cmd = "solc contracts/*/*.sol --allow-paths . --bin --abi -o build/contracts --overwrite" + compilerOpts;
-        console.log("compiling.. ", conf.compilers.solc.optimizer, cmd)
+        console.log("compiling.. ", cmd)
         await exec(cmd);
     } catch (e) {
         console.error(e);
